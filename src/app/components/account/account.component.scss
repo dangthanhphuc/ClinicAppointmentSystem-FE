@@ -1,0 +1,58 @@
+.background-secondary {
+    min-height: 1000px;
+    padding: 50px 150px;
+    background-color: #f7f9fa;
+}
+
+.image-title {
+    height: 64px;
+    width: 64px;
+}
+
+.align-items-center {
+    display: flex;
+    align-items: center;
+}
+
+form div {
+    margin-bottom: 12px;
+}
+
+.appointment-list i {
+    width: 20px;
+    height: 20px;
+    margin-right: 16px;
+}
+
+button {
+    border: none;
+    background-color: white;
+}
+
+button:hover {
+    color: rgb(72, 225, 236)
+}
+
+p {
+    margin: 0;
+}
+
+.btn-delete {
+    background-color: #dc3545;
+    color: white;
+}
+
+.btn-delete:hover {
+    background-color: rgb(187, 45, 59);
+    color: white;
+}
+
+.btn-closed {
+    background-color: rgb(33, 37, 41);
+    color: white;
+}
+
+.btn-closed:hover {
+    background-color: rgb(92, 99, 106);
+    color: white;
+}

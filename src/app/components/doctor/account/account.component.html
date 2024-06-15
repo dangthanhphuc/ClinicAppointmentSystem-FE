@@ -1,0 +1,124 @@
+<div class="container rounded bg-white mt-5 mb-5">
+    <div class="row">
+        <div class="col-md-3 border-end">
+            <div class="d-flex flex-column align-items-center text-center p-3 py-5">
+                <div class="avatar position-relative">
+                    <img class="rounded-circle mt-5 mb-2" width="160px" height="160px" [src]="productImageUrl" />
+                    <div class="overplay position-absolute rounded-circle mt-5 mb-2 bg-dark top-0 bottom-0 start-0 end-0 d-none d-flex justify-content-center align-items-center">
+                        <div class="flex-grow">
+                            <input type="file" id="fileInput" (change)="onAvatarChange($event)" accept="image/*" hidden>
+                            <button type="button" class="bg-transparent border-0" (click)="triggerFileInput()">
+                                <i class="bi bi-camera text-light fs-2"></i> 
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <span class="font-weight-bold">{{this.doctorResponse.name}}</span>
+                <span class="text-black-50">{{this.doctorResponse.email}}</span>
+                <span></span>
+            </div>
+        </div>
+        <div class="col-md-5 border-end">
+            <form [formGroup]="accountForm" (ngSubmit)="ngUpdateAccount()">
+                <div class="p-3 py-5">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h4 class="text-right">Tài khoản</h4>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-6">
+                            <label class="labels">Tên</label>
+                            <input type="text" class="form-control" formControlName="name" />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="labels">Mã</label>
+                            <input type="text" class="form-control" formControlName="id" readonly />
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-12">
+                            <label class="labels">Email</label>
+                            <input type="email" class="form-control" formControlName="email" value="" />
+                        </div>
+                        <div class="col-md-12">
+                            <label class="labels">Địa chỉ</label>
+                            <input type="text" class="form-control" formControlName="address" value="" />
+                        </div>
+                        <div class="col-md-12">
+                            <label class="labels">Số điện thoại</label>
+                            <input type="text" class="form-control" formControlName="phone_number" value="" />
+                        </div>
+                        <div class="col-md-12">
+                            <label class="labels">Ngày sinh</label>
+                            <input type="date" class="form-control" formControlName="date_of_birth" />
+                        </div>
+                        <div class="col-md-12">
+                            <label class="labels">Giới tính</label>
+                            <select class="form-control" formControlName="gender">
+                                <option value="Nam">Nam</option>
+                                <option value="Nữ">Nữ</option>
+                            </select>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="labels">Phòng khám / Bệnh viện</label>
+                            <select class="form-control" formControlName="clinic">
+                                <option *ngFor="let clinic of clinics" [value]="clinic.id" [selected]="clinic.id === selectedClinicId">{{clinic.name}}</option>
+                            </select>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="labels">Chuyên khoa</label>
+                            <select class="form-control" (change)="addSpecialty($event)">
+                                <option value="" disabled selected>Thêm chuyên khoa</option>
+                                <option *ngFor="let specialty of specialties" [value]="specialty.id" >{{specialty.name}}</option>
+                            </select>
+                            <ng-container *ngIf="doctorResponse.specialties.length > 0">
+                                <div class="mt-2">
+                                    <ul class="p-0 list-specialties">
+                                        <li *ngFor="let specialty of doctorSpecialties; let i = index;" class="px-2 me-2 mt-2 bg-secondary-subtle border rounded-pill" style="font-size: 15px;">
+                                            {{ specialty.name }}
+                                            <button type="button" class="btn-close" aria-label="Close" (click)="deleteSpecialty(i)"></button>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </div>
+                    <div class="mt-5 text-center">
+                        <button class="btn btn-primary profile-button" type="submit" [disabled]="!isAccountFormChanged">
+                         Lưu Thông Tin
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-4">
+            <div class="p-3 py-5">
+                <div class="d-flex justify-content-between align-items-center experience">
+                    <span>Thay đổi mật khẩu</span>
+                </div>
+                <br />
+                <form [formGroup]="updatePasswordForm" (ngSubmit)="onUpdatePass()">
+                    <div class="col-md-12">
+                        <label class="labels">Mật khẩu cũ</label>
+                        <input type="password" class="form-control" placeholder="Mật khẩu cũ" formControlName="old_pass" />
+                    </div>
+                    <br />
+                    <div class="col-md-12">
+                        <label class="labels">Mật khẩu mới</label>
+                        <input type="password" class="form-control" placeholder="Mật khẩu mới" formControlName="new_pass" />
+                    </div>
+                    <br />
+                    <div class="col-md-12">
+                        <label class="labels">Xác nhận mật khẩu</label>
+                        <input type="password" class="form-control" placeholder="Xác nhận mật khẩu" formControlName="confirm_pass" />
+                    </div>
+                    <div class="mt-5 text-center">
+                        <button class="btn btn-primary profile-button" type="submit" [disabled]="!isUpdatePassFormChanged">
+                            Cập nhập mật khẩu
+                        </button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>

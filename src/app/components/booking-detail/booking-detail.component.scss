@@ -1,0 +1,38 @@
+.booking_detail_container {
+    background-color: #e9ecef;
+    color: #212529;
+    padding: 44px 120px;
+}
+
+.section-doctor {
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+}
+
+.time-slot {
+    width: max-content;
+}
+
+.active-button {
+    background-color: #eff6ff;
+    border-radius: unset;
+    border-bottom: 4px solid #3978b7;
+}
+
+.horizontal-line {
+    flex: 1;
+    border-bottom: 1px solid black;
+    margin-left: 10px;
+}
+
+.left-arrow {
+    top: 50%;
+    transform: translateY(-50%);
+    left: 10px;
+}
+
+.right-arrow {
+    top: 50%;
+    transform: translateY(-50%);
+    right: 10px;
+}

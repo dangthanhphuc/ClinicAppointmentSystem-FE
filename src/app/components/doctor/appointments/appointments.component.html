@@ -1,0 +1,124 @@
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between">
+                <strong class="card-title m-0">Quản lý lịch hẹn</strong>
+            </div>
+
+            <full-calendar class="p-2" [options]="calendarOptions" #calendar>
+            </full-calendar>
+
+            <ng-template #eventModal let-modal>
+                <div class="modal-dialog modal-lg m-0">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Thông tin đặt hẹn</h1>
+                            <button type="button" class="btn-close" (click)="modal.dismiss()" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-6 border-end ">
+                                    <div>
+                                        <h5 class="non-wrap">Thông tin lịch hẹn</h5>
+                                    </div>
+
+                                    <div>
+                                        <label for="idAppointment" class="form-label fw-medium">Mã lịch hẹn :</label>
+                                        <p class="ms-2 d-inline-block" id="idAppointment">{{selectedAppointment?.id}}</p>
+                                    </div>
+                                    <div>
+                                        <label for="idAppointment" class="form-label fw-medium"> Ngày hẹn :</label>
+                                        <p class="ms-2 d-inline-block" id="idAppointment">{{selectedAppointment?.available_time_start| date: "dd/MM/yyyy"}}</p>
+                                    </div>
+                                    <div>
+                                        <label for="idAppointment" class="form-label fw-medium">Giờ hẹn :</label>
+                                        <p class="ms-2 d-inline-block" id="idAppointment">{{selectedAppointment?.available_time_start| date: "HH:mm"}} - {{selectedAppointment?.available_time_end | date: "HH:mm a"}}</p>
+                                    </div>
+                                    <div>
+                                        <label for="idAppointment" class="form-label fw-medium">Kiểu hẹn :</label>
+                                        <p class="ms-2 d-inline-block" id="idAppointment">{{selectedAppointment?.appointment_type_name ? selectedAppointment?.appointment_type_name : "Chưa Hẹn"}}</p>
+                                    </div>
+                                    <div>
+                                        <label for="idAppointment" class="form-label fw-medium">Trạng Thái :</label>
+                                        <p class="ms-2 d-inline-block" id="idAppointment">{{selectedAppointment?.status}}</p>
+                                    </div>
+
+                                </div>
+                                <div class="col-6">
+                                    <div>
+                                        <h5 class="non-wrap">Thông tin người hẹn</h5>
+                                    </div>
+                                    <ng-container *ngIf="selectedAppointment && selectedAppointment.patient">
+                                        <div>
+                                            <label for="idAppointment" class="form-label fw-medium">Tên :</label>
+                                            <p class="ms-2 d-inline-block" id="idAppointment">{{selectedAppointment.patient.name}}</p>
+                                        </div>
+                                        <div>
+                                            <label for="idAppointment" class="form-label fw-medium"> Địa chỉ :</label>
+                                            <p class="ms-2 d-inline-block" id="idAppointment">{{selectedAppointment.patient.address}}</p>
+                                        </div>
+                                        <div>
+                                            <label for="idAppointment" class="form-label fw-medium">Email :</label>
+                                            <p class="ms-2 d-inline-block" id="idAppointment">{{selectedAppointment.patient.email}}</p>
+                                        </div>
+                                        <div>
+                                            <label for="idAppointment" class="form-label fw-medium">SĐT :</label>
+                                            <p class="ms-2 d-inline-block" id="idAppointment">{{selectedAppointment.patient.phone_number}}</p>
+                                        </div>
+                                        <div>
+                                            <label for="idAppointment" class="form-label fw-medium">Ngày sinh :</label>
+                                            <p class="ms-2 d-inline-block" id="idAppointment">{{ selectedAppointment.patient.date_of_birth | date: "dd-MM-yyyy" }}</p>
+                                        </div>
+                                    </ng-container>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="" class="btn btn-danger" (click)="onDelete(selectedAppointment ? selectedAppointment.id : 0)">Xóa</button>
+                        </div>
+                    </div>
+                </div>
+
+            </ng-template>
+
+            <ng-template #addModal let-modal>
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable m-0">
+                    <div class="modal-content position-relative">
+
+                        <div class="position-absolute start-0 end-0 top-0">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="exampleModalLabel">Thông tin đặt hẹn</h1>
+                                <button type="button" class="btn-close" (click)="modal.dismiss()" aria-label="Close"></button>
+                            </div>
+                        </div>
+                        <form [formGroup]="addAppointmentForm" (ngSubmit)="addAppointment()" class="">
+                            <div class="modal-body my-5">
+
+                                <div class="form-field">
+                                    <label for="dateAppointment" class="icon-label"><i class="bi bi-calendar-event"></i></label>
+                                    <input type="date" class="bg-transparent" id="dateAppointment" formControlName="dateAppointment">
+                                </div>
+                                <div class="form-field">
+                                    <label for="time_start_appointment" class="icon-label"><i class="bi bi-clock"></i></label>
+                                    <input type="time" class="bg-transparent" id="time_start_appointment" formControlName="time_start_appointment"> --
+                                    <input type="time" class="bg-transparent" id="time_end_appointment" formControlName="time_end_appointment">
+                                </div>
+
+                            </div>
+
+                            <div class="position-absolute start-0 end-0 bottom-0">
+                                <div class="action modal-footer">
+                                    <button type="button" (click)="modal.dismiss()">Hủy</button>
+                                    <button type="submit" (click)="modal.dismiss()" [disabled]="addAppointmentForm.invalid">Tạo lịch</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </ng-template>
+
+        </div>
+    </div>
+</div>

@@ -1,1 +1,81 @@
-<router-outlet></router-outlet>
+<div class="position-relative">
+    <router-outlet></router-outlet>
+
+    <ng-container *ngIf="toasts.length > 0">
+        <!-- <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+            <div *ngFor="let toast of toasts" class="toast bg-white show" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header p-2">
+                    <img src="..." class="rounded me-2" alt="...">
+                    <strong class="me-auto">{{toast.title}}</strong>
+                    <small class="text-body-secondary">{{toast.time}}</small>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close" (click)="removeToast(toast)"></button>
+                </div>
+                <div class="toast-body p-2">
+                    {{toast.message}}
+                </div>
+            </div>
+
+        </div> -->
+        <!-- <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+            <div *ngFor="let toast of toasts" class="toast align-items-center text-bg-primary border-0 show" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        {{toast.message}}
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+        </div> -->
+
+
+        <div class="wrapper">
+            <div *ngFor="let toast of toasts" class="toast" [ngClass]="{'success' : toast.state == toastState.SUCCESS, 'info': toast.state == toastState.INFO, 'warning': toast.state == toastState.WARNING, 'error': toast.state == toastState.ERROR}">
+                <div class="outer-container">
+                    <i class="fas" [ngClass]="{
+                            'fa-check-circle' : toast.state == toastState.SUCCESS, 
+                            'fa-info-circle': toast.state == toastState.INFO, 
+                            'fa-exclamation-circle': toast.state == toastState.WARNING, 
+                            'fa-times-circle': toast.state == toastState.ERROR
+                        }"></i>
+                </div>
+                <div class="inner-container">
+                    <p>{{toast.title}}</p>
+                    <p>{{toast.message}}</p>
+                </div>
+                <button>&times;</button>
+            </div>
+            <!-- <div class="toast error">
+                <div class="outer-container">
+                    <i class="fas fa-times-circle"></i>
+                </div>
+                <div class="inner-container">
+                    <p>Error</p>
+                    <p>Error has occured while saving changes.</p>
+                </div>
+                <button>&times;</button>
+            </div>
+            <div class="toast ">
+                <div class="outer-container">
+                    <i class="fas fa-info-circle"></i>
+                </div>
+                <div class="inner-container">
+                    <p>Info</p>
+                    <p>New settings available on your account.</p>
+                </div>
+                <button>&times;</button>
+            </div>
+            <div class="toast warning">
+                <div class="outer-container">
+                    <i class="fas fa-exclamation-circle"></i>
+                </div>
+                <div class="inner-container">
+                    <p>Warning</p>
+                    <p>Username you have entered is invalid.</p>
+                </div>
+                <button>&times;</button>
+            </div> -->
+        </div>
+
+    </ng-container>
+
+</div>

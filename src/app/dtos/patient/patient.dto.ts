@@ -1,6 +1,7 @@
 import { IsBoolean, IsDate, IsEmail, IsNotEmpty, IsPhoneNumber } from "class-validator";
 
 export class PatientDTO {
+
     @IsEmail()
     email : string;
     
@@ -11,10 +12,10 @@ export class PatientDTO {
     address : string;
 
     @IsPhoneNumber()
-    phoneNumber : string;
+    phone_number : string;
 
     @IsDate()
-    dateOfBirth : Date;
+    date_of_birth : Date;
 
     @IsBoolean()
     gender : boolean;
@@ -23,8 +24,8 @@ export class PatientDTO {
         this.email = data.email;
         this.name = data.name;
         this.address = data.address;
-        this.phoneNumber = data.phoneNumber;
-        this.dateOfBirth = data.dateOfBirth;
+        this.phone_number = data.phone_number;
+        this.date_of_birth = data.date_of_birth;
         this.gender = data.gender;
     }
 

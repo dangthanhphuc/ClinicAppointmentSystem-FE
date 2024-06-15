@@ -1,0 +1,158 @@
+<app-header></app-header>
+<div class="booking_detail_container " style="margin-top: 80px;">
+    <div class="row">
+        <div class="col-8 px-3">
+            <div class="d-flex flex-column row-gap-3">
+                <div class="py-2 bg-body">
+                    <div class="d-flex px-3 position-relative">
+                        <div class="bg-primary rounded-circle p-2 position-absolute">1</div>
+                        <button class="btn flex-grow-1 text-start ps-5" type="button" data-bs-toggle="collapse" data-bs-target="#dateTimeCollapse" aria-expanded="false" aria-controls="dateTimeCollapse">
+                            Ngày và giờ khám
+                        </button>
+                        <i class="bi bi-caret-down-fill d-flex align-items-center"></i>
+                    </div>
+
+                    <div class="collapse mt-3" id="dateTimeCollapse">
+                        <div class="datetime-title px-3 position-relative mb-3">
+                            <div class="d-flex align-items-center">
+                                <span class="text-success fw-medium"><i class="bi bi-sun"></i> Khung giờ</span>
+                                <div class="horizontal-line"></div>
+                            </div>
+                        </div>
+                        <div class="p-0 position-relative">
+                            <button (click)="scrollLeft()" class="btn btn-primary position-absolute left-arrow  rounded-circle">←</button>
+                            <div class="d-flex mx-3 overflow-hidden" #scrollContainer>
+                                <button *ngFor="let appointment of appointmentSchedules; let i = index;" class="btn me-2 px-3 day-button text-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAppointmentDetail" aria-expanded="false" aria-controls="collapseAppointmentDetail"
+                                    (click)="onClickDate(i)" [ngClass]="{'active-button': indexOfAppointmentSchedules == i}">
+                                    <p class="fw-medium">{{ getDayOfWeekName(appointment.date.getDay()) }}, {{appointment.date | date: 'dd'}}-{{appointment.date | date: 'MM'}} </p>
+                                    <p class="text-success time-slot mb-0">{{appointment.schedules.length}} khung giờ</p>
+                                </button>
+                            </div>
+                            <button (click)="scrollRight()" class="btn btn-primary position-absolute right-arrow rounded-circle">→</button>
+                        </div>
+                        <ng-container *ngIf="selectedAppointmentSchedule != undefined " id="collapseAppointmentDetail">
+
+                            <div class="row row-cols-5 p-3 w-100 mx-auto border-top">
+                                <div class="px-3 mb-3" *ngFor="let schedule of selectedAppointmentSchedule.schedules; let i = index;">
+                                    <div class="col border rounded text-center">
+                                        <button type="button" class="btn w-100" [ngClass]="{'btn-light' : schedule.patientId == -1, 'btn-secondary': schedule.patientId != -1, 'active': indexOfSchedule == i}" [disabled]="schedule.patientId != -1" (click)="changeSchedule(i)">
+                                            {{schedule.time_start.hours}}:{{schedule.time_start.minutes.toString().padStart(2, '0')}} - {{schedule.time_end.hours}}:{{schedule.time_end.minutes.toString().padStart(2, '0')}}
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-container>
+                    </div>
+
+                </div>
+
+                <div class="py-2 bg-body">
+                    <div class="py-2 bg-body">
+                        <div class="d-flex px-3 position-relative">
+                            <div class="bg-primary rounded-circle p-2 position-absolute">2</div>
+                            <button class="btn flex-grow-1 text-start ps-5" type="button" data-bs-toggle="collapse" data-bs-target="#profilePatient" aria-expanded="false" aria-controls="profilePatient">
+                                Hồ sơ bệnh nhân
+                            </button>
+                            <i class="bi bi-caret-down-fill d-flex align-items-center"></i>
+                        </div>
+                        <div class="collapse mt-2" id="profilePatient">
+                            <div class="patient-profile p-4">
+                                <div class="border border-primary rounded">
+                                    <button class="btn d-flex  px-3 py-2 w-100 justify-content-between" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                        <div class="d-flex">
+                                            <div class="icon-profile me-3 d-flex align-items-center">
+                                                <i class="bi bi-folder fs-2"></i>
+                                            </div>
+                                            <div class="patient-info">
+                                                <p class="m-0 fw-medium">{{userResponse?.name?.toLocaleUpperCase()}}</p>
+                                                <p class="m-0 fw-light">{{userResponse?.date_of_birth | date: "dd-MM-yyyy"}}</p>
+                                            </div>
+                                        </div>
+
+                                        <i class="bi bi-caret-down d-flex align-self-center"></i>
+                                        
+                                    </button>
+                                    <div class="collapse" id="collapseExample">
+                                        <ul class="list-group list-group-flush rounded">
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">Mã bệnh nhân <span>{{userResponse?.id}}</span></li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">Họ và tên <span>{{userResponse?.name}}</span></li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">Giới tính <span>{{userResponse?.gender}}</span></li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">Ngày sinh <span>{{userResponse?.date_of_birth | date: "dd/MM/yyyy"}}</span></li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">Số điện thoại <span>{{userResponse?.phone_number}}</span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div class="additional-information mt-3">
+                                    <form [formGroup]="additionalForm">
+                                        <div class="section-appointment-type mb-3">
+                                            <label class="labels">Kiểu hẹn</label>
+                                            <select class="form-control" formControlName="appointment_type">
+                                                <option value="" selected disabled>-- Chọn kiểu hẹn --</option>
+                                                <option *ngFor="let appointmentType of appointmentTypes" [value]="appointmentType.id">{{appointmentType.name}}</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="section-note">
+                                            <label for="note">Ghi chú</label>
+                                            <textarea id="note" class="form-control" formControlName="note" placeholder="Triệu chứng, thuốc đang dùng, tiền sử, ..."></textarea>
+                                        </div>
+
+                                    </form>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="col-4 px-3">
+            <div class="content bg-body rounded">
+                <div class="d-flex p-3 justify-content-between">
+                    <p class="m-0">Thông tin đặt khám</p>
+                    <i class="bi bi-caret-down-fill d-flex align-items-center"></i>
+                </div>
+                <div class="section-doctor border-top border-bottom d-flex py-3">
+                    <div class="doctor-image col-3 px-3">
+                        <img [src]="doctorResponse ? doctorResponse.img_url : 'sdf'" alt="" class="w-100 h-100">
+                    </div>
+                    <div class="doctor-info col-8">
+                        <p class="m-0 fs-5 fw-medium">{{doctorResponse?.name}}</p>
+                        <p class="m-0 fw-light">{{doctorResponse?.clinic?.address}}</p>
+                    </div>
+                </div>
+
+                <div class="info-booking p-3">
+                    <div class="d-flex justify-content-between mb-3">
+                        <p class="m-0 text-start">Ngày khám</p>
+                        <p class="m-0 text-end">{{selectedAppointmentSchedule?.date | date: "dd/MM/yyyy"}}</p>
+                    </div>
+                    <ng-container *ngIf="selectedAppointmentSchedule && indexOfSchedule != -1">
+                        <div class="d-flex justify-content-between mb-3">
+                            <p class="m-0">Khung giờ</p>
+                            <p class="m-0">
+                                {{selectedAppointmentSchedule.schedules[indexOfSchedule].time_start.hours}}:{{selectedAppointmentSchedule.schedules[indexOfSchedule].time_start.minutes.toString().padStart(2, "0")}} -- {{selectedAppointmentSchedule.schedules[indexOfSchedule].time_end.hours}}:{{selectedAppointmentSchedule.schedules[indexOfSchedule].time_end.minutes.toString().padStart(2,
+                                "0")}}
+                            </p>
+                        </div>
+                        <div class="d-flex justify-content-between mb-3">
+                            <p class="m-0 text-start">Bệnh nhân</p>
+                            <p class="m-0 text-end">{{userResponse?.name?.toUpperCase()}}</p>
+                        </div>
+                    </ng-container>
+
+                </div>
+
+                <div class="action-booking p-3">
+                    <button type="button" class="btn btn-primary w-100" (click)="booking()" [disabled]="additionalForm.invalid || selectedAppointmentSchedule == null || indexOfSchedule == -1">Đặt lịch</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+<app-footer></app-footer>

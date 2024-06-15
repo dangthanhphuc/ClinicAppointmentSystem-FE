@@ -1,0 +1,210 @@
+<app-header></app-header>
+<div class="container-fuild background-secondary" style="margin-top: 80px;">
+    <div class="row justify-content-around">
+        <div class="col-3 py-3 px-0 bg-white rounded-4 shadow" style="min-height: 650px;">
+            <div class="first-part p-3 pt-0 border-bottom border-2">
+                <div class="d-inline-block align-baseline me-3">
+                    <img class="image-title rounded-5 " [src]="userResponse?.img_url" alt="">
+                </div>
+                <div class="information d-inline-block align-top">
+                    <h5>{{ userResponse?.name }}</h5>
+                </div>
+            </div>
+
+            <div class="seconds-part px-4">
+                <div class="context-head border-bottom border-2 py-3">
+                    <div class="align-items-center">
+                        <fa-icon class="icon p-0 me-4" [icon]="faEnvelope"></fa-icon>
+                        <button type="button" class="d-inline-block" (click)="showView('informationAccount')">Thông Tin Tài Khoản</button>
+                    </div>
+                    <div class="align-items-center">
+                        <i class="bi bi-calendar3 fs-4 me-4"></i>
+                        <button type="button" class="d-inline-block" (click)="showView('managementAppointment')">Quản Lý Đặt Hẹn</button>
+                    </div>
+                </div>
+                <div class="context-footer align-items-center py-3">
+                    <i class="bi bi-power fs-4 me-4"></i>
+                    <button class="d-inline-block" (click)="onLogOut()">Đăng Xuất</button>
+                </div>
+            </div>
+        </div>
+
+        <ng-container *ngTemplateOutlet="currentView">
+        </ng-container>
+        <ng-template #informationAccount>
+            <div class="col-8 bg-white rounded-4 shadow p-0">
+                <div class="header-right py-3 px-4 border-bottom border-2">
+                    <h4 class="text-uppercase m-0">Thông tin người dùng</h4>
+                </div>
+                <div class="body-right py-3 px-4">
+                    <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+                        <div>
+                            <label for="email" class="form-label fw-medium">Email</label>
+                            <input id="email" class="form-control" type="email" formControlName="email">
+                        </div>
+                        <div>
+                            <label for="name" class="form-label fw-medium">Tên</label>
+                            <input id="name" class="form-control" type="text" formControlName="name">
+                        </div>
+
+                        <div>
+                            <label for="address" class="form-label fw-medium">Địa chỉ</label>
+                            <input id="address" class="form-control" type="text" formControlName="address">
+                        </div>
+
+                        <div>
+                            <label for="phone_number" class="form-label fw-medium">Số Điện Thoại</label>
+                            <input id="phone_number" class="form-control" type="text" formControlName="phone_number">
+                        </div>
+
+                        <div>
+                            <label for="date_of_birth" class="form-label fw-medium">Ngày Sinh</label>
+                            <input id="date_of_birth" class="form-control" type="date" formnovalidate formControlName="date_of_birth">
+                        </div>
+
+                        <div>
+                            <label for="gender" class="form-label fw-medium">Giới Tính</label>
+                            <select id="gender" class="form-control" formControlName="gender">
+                                <option value="Nam">Nam</option>
+                                <option value="Nữ">Nữ</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label for="image" class="form-label fw-medium">Tải ảnh đại diện</label>
+                            <input id="image" class="form-control" type="file" formnovalidate (change)="onFileChange($event)" formControlName="image">
+                            <ng-container *ngIf="previewUrl != null">
+                                <div style="height: 300px; width: 300px;">
+                                    <img [src]="previewUrl" alt="" class="h-100 w-100">
+                                </div>
+
+                            </ng-container>
+
+                        </div>
+
+                        <div class="d-flex justify-content-end mt-3">
+                            <button type="submit" class="bg-danger text-white py-2 px-3 rounded-3 me-3">Hủy</button>
+                            <button type="submit" class="bg-success text-white py-2 px-3 rounded-3" [ngClass]="{'bg-body-secondary': !isFormDirty}" [disabled]="!isFormDirty" (click)="onSaveChanges()">Lưu</button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </ng-template>
+
+        <ng-template #managementAppointment>
+            <div class="col-8 bg-white rounded-4 shadow p-0">
+                <div class="header-right py-3 px-4 border-bottom border-2">
+                    <h4 class="text-uppercase m-0 position-relative">Quản lý đặt hẹn <button class="d-inline-block position-absolute top-0 end-0"><i class="bi bi-envelope"></i></button></h4>
+                </div>
+                <div class="appointment-list">
+                    <div class="d-flex">
+                        <div class="col border-end">
+                            <div class="search-appointment p-3">
+                                <input type="text" placeholder="Mã lịch hẹn" class="p-2 rounded w-100">
+                            </div>
+
+                            <div class="doctor-infor">
+                                <div class="d-flex justify-content-between appointments-list bg-secondary-subtle p-4 mb-1 overflow-hidden" *ngFor="let appointment of appointments" (click)="onClickAppointment(appointment)">
+                                    <div class="col-8 infor-first">
+                                        <h2 class="fs-2">{{appointment.doctor.name}}</h2>
+                                        <p class="">{{appointment.available_time_start | date: "HH:mm"}} - {{appointment.available_time_start | date: 'dd/MM/yyyy'}}</p>
+                                    </div>
+
+                                    <div class="col-2 infor-second align-self-center text-center p-3">
+                                        <button class="btn btn-danger bg-danger w-100" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">X</button>
+                                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Xác nhận xóa </h1>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        Bạn có chắn chắn muốn xóa lịch hẹn này không ?
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-closed" data-bs-dismiss="modal">Đóng</button>
+                                                        <button type="button" class="btn btn-delete" data-bs-dismiss="modal" (click)="onDeleteAppointment(appointment.id)">Xóa</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col px-3 py-4 h-100">
+                            <ng-container *ngIf="selectedAppointment">
+                                <div class="row part-first">
+                                    <div class="col-3">
+                                        <img src="/assets/images/avatar_none.png" alt="" class="w-100">
+                                    </div>
+                                    <div class="col-8">
+                                        <h4>{{selectedAppointment.doctor.name}}</h4>
+                                        <p>{{selectedAppointment.doctor.clinic.name}}</p>
+                                    </div>
+                                </div>
+                                <div class="booking-infor" class="mb-3">
+                                    <strong>Thông tin đặt khám</strong>
+                                    <div class="d-flex justify-content-between">
+                                        <p>Mã phiếu khám</p>
+                                        <strong>{{selectedAppointment.id}}</strong>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <p>Ngày khám</p>
+                                        <strong>{{selectedAppointment.available_time_start | date: 'dd/MM/yyyy' }}</strong>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <p>Kiểu hẹn</p>
+                                        <strong>{{ selectedAppointment.appointment_type_name }}</strong>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <p>Chuyên khoa</p>
+                                        <ul>
+                                            <li *ngFor="let specialty of selectedAppointment.doctor.specialties" class="text-end">
+                                                <strong>{{specialty.name}}</strong>
+                                            </li>
+                                        </ul>
+
+                                    </div>
+                                </div>
+                                <div class="patient-infor" class="mb-3">
+                                    <strong>Thông tin bệnh nhân</strong>
+                                    <div class="d-flex justify-content-between">
+                                        <p>Họ và tên</p>
+                                        <strong>{{selectedAppointment.patient.name}}</strong>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <p>Năm sinh</p>
+                                        <strong>{{ selectedAppointment.patient.date_of_birth | date: 'dd/MM/yyyy'}}</strong>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <p>Số điện thoại</p>
+                                        <strong>{{selectedAppointment.patient.phone_number | date: 'dd/MM/yyyy' }}</strong>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <p>Giới tính</p>
+                                        <strong>{{selectedAppointment.patient.gender ? "Nam" : "Nữ"}}</strong>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <p>Địa chỉ</p>
+                                        <strong>{{selectedAppointment.patient.address != "" ? selectedAppointment.patient.address : "Chưa cập nhập"}}</strong>
+                                    </div>
+                                </div>
+                                <div class="result">
+                                    <strong>Kết quả</strong>
+                                    <p class="text-center">... Đang chờ kết quả cập nhật</p>
+
+                                </div>
+                            </ng-container>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </ng-template>
+    </div>
+</div>

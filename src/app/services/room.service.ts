@@ -23,7 +23,7 @@ export class RoomService {
   }
 
   getRoomsByClinicId(clinicId : number) : Observable<ResponseObject> {
-    return this.http.get<ResponseObject>(`${this.apiBaseUrl}/clinic/${clinicId}`);
+    return this.http.get<ResponseObject>(`${this.apiBaseUrl}/clinics/${clinicId}`);
   }
 
   createRoom(roomDTO : RoomDTO) : Observable<ResponseObject> {

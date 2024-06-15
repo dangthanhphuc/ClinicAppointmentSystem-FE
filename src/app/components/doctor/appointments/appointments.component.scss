@@ -1,0 +1,42 @@
+tbody th {
+    height: 60px;
+    padding: 0;
+    line-height: 60px;
+    font-weight: 400;
+}
+
+.action {
+    height: min-content;
+}
+
+.max-context {
+    width: max-content;
+    height: max-content;
+}
+
+.icon-label {
+    margin-right: 16px;
+}
+
+.form-field {
+    padding: 16px 8px;
+    margin-bottom: 6px;
+}
+
+.form-field:hover {
+    padding: 16px 8px;
+    background-color: #e9ecef;
+    ;
+}
+
+input[type="date"] {
+    border: none;
+}
+
+input[type="time"] {
+    border: none;
+}
+
+input[type="time"]:hover {
+    border-bottom: 1px solid black;
+}

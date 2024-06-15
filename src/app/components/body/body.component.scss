@@ -18,7 +18,7 @@ strong {
     position: relative;
     width: 288px;
     height: 180px;
-    background: url(https://encrypted-tbn1.gstatic.com/licensed-image?q=tbn:ANd9GcRubevyxtHLkX0tJVeEFraQ69XO-pt9WRoUCC10WjiDPXUZ44IsdxIzDaNauBn1dn6--kHucmKSXXr8M0582OROQzwdkA58EQ2ndA3JcQ);
+    background: url(https://images.unsplash.com/photo-1629909613654-28e377c37b09?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Y2xpbmljfGVufDB8fDB8fHww);
     background-position: center center;
     width: 100%;
 }
@@ -29,7 +29,7 @@ strong {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(0, 0, 0, 0.4);
 }
 
 .btn-readmore {
@@ -48,4 +48,10 @@ strong {
     background-color: black;
     text-decoration: none;
     color: white;
+}
+
+.overplay:hover {
+    background: rgba(43, 43, 43, 0.7);
+    cursor: pointer;
+    transition: all 300ms ease 0s;
 }

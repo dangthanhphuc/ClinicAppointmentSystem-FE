@@ -10,14 +10,25 @@
 
                 <div class="signin-form">
                     <h2 class="form-title">Đăng nhập</h2>
-                    <form method="POST" class="register-form" id="login-form">
+                    <form class="register-form" [formGroup]="formGroup" (ngSubmit)="onSubmit()">
                         <div class="form-group">
-                            <label for="your_name"><i class="bi bi-person-fill"></i></label>
-                            <input type="text" name="your_name" id="your_name" placeholder="Tên Tài Khoản" />
+                            <div class="position-relative">
+                                <label for="username"><i class="bi bi-person-fill"></i></label>
+                                <input type="text" formControlName="username" id="username" placeholder="Tên Tài Khoản" />
+                            </div>
+                            <div *ngIf="formGroup.get('username')?.hasError('required')" class="ms-4 text-danger">
+                                Vui lòng nhập tên tài khoản.
+                            </div>
                         </div>
                         <div class="form-group">
-                            <label for="your_pass"><i class="bi bi-lock-fill"></i></label>
-                            <input type="password" name="your_pass" id="your_pass" placeholder="Mật Khẩu" />
+                            <div class="position-relative">
+                                <label for="password"><i class="bi bi-lock-fill"></i></label>
+                                <input type="password" id="password" formControlName="password" placeholder="Mật Khẩu" />
+                            </div>
+                            <div *ngIf="formGroup.get('password')?.hasError('required')" class="ms-4 text-danger">
+                                Vui lòng nhập mật khẩu.
+                            </div>
+
                         </div>
                         <div class="form-group">
                             <input type="checkbox" name="remember-me" id="remember-me" class="agree-term" />

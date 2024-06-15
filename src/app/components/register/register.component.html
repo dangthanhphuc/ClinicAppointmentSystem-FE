@@ -3,52 +3,201 @@
     <section class="signup">
         <div class="container">
             <div class="signup-content">
-                <div class="signup-form">
-                    <h2 class="form-title">Đăng Ký</h2>
-                    <form method="POST" class="register-form" id="register-form">
-                        <div class="form-group">
-                            <label for="name"><i class="bi bi-person-fill"></i></label>
-                            <input type="text" name="name" id="name" placeholder="Tên Tài Khoản" />
-                        </div>
-                        <div class="form-group">
-                            <label for="pass"><i class="bi bi-lock-fill"></i></label>
-                            <input type="password" name="pass" id="pass" placeholder="Mật Khẩu" />
-                        </div>
-                        <div class="form-group">
-                            <label for="re-pass"><i class="bi bi-lock"></i></label>
-                            <input type="password" name="re_pass" id="re_pass" placeholder="Nhập lại mật khẩu" />
-                        </div>
-                        <div class="form-group">
-                            <label for="email"><i class="bi bi-envelope-fill"></i></label>
-                            <input type="email" name="email" id="email" placeholder="Email" />
-                        </div>
-                        <div class="form-group">
-                            <!-- Chú ý -->
-                            <label for="name"><i class="bi bi-person"></i></label>
-                            <input type="text" name="name" id="name" placeholder="Tên Đầy Đủ" />
-                        </div>
-                        <div class="form-group">
-                            <!-- Chú ý -->
-                            <label for="re-pass"><i class="bi bi-geo-alt-fill"></i></label>
-                            <input type="text" name="re_pass" id="re_pass" placeholder="Địa Chỉ" />
-                        </div>
-                        <div class="form-group">
-                            <!-- Chú ý -->
-                            <label for="re-pass"><i class="bi bi-phone-fill"></i></label>
-                            <input type="text" name="re_pass" id="re_pass" placeholder="Số Điện Thoại" />
-                        </div>
-                        <div class="form-group">
-                            <!-- Chú ý -->
-                            <label for="re-pass"><i class="bi bi-calendar-event-fill"></i></label>
-                            <input type="date" name="re_pass" id="re_pass" placeholder="Ngày Sinh" />
-                        </div>
-                        <div class="form-group form-button">
-                            <input type="submit" name="signup" id="signup" class="form-submit" value="Đăng Ký" />
-                        </div>
-                    </form>
-                </div>
+                <ng-container *ngIf="showTemplate('Người Dùng')">
+                    <div class="signup-form">
+                        <h3 class="form-title">Đăng Ký Người Dùng</h3>
+                        <form class="register-form" [formGroup]="patientFormGroup" (ngSubmit)="onSubmitPatient()">
+                            <div class="form-group">
+                                <div class="position-relative">
+                                    <label for="username"><i class="bi bi-person-fill"></i></label>
+                                    <input type="text" id="username" formControlName="username" placeholder="Tên Tài Khoản" />
+                                </div>
+                                <div *ngIf="patientFormGroup.get('username')?.invalid">
+                                    <div *ngIf="patientFormGroup.get('username')?.hasError('required')" class="ms-4 text-danger">Vui lòng nhập tên tài khoản.</div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="position-relative">
+                                    <label for="password"><i class="bi bi-lock-fill"></i></label>
+                                    <input type="password" id="password" formControlName="password" placeholder="Mật Khẩu" />
+                                </div>
+                                <div *ngIf="patientFormGroup.get('password')?.invalid">
+                                    <div *ngIf="patientFormGroup.get('password')?.hasError('required')" class="ms-4 text-danger">Vui lòng nhập mật khẩu.</div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="position-relative">
+                                    <label for="retypePassword"><i class="bi bi-lock"></i></label>
+                                    <input type="password" id="retypePassword" formControlName="retypePassword" placeholder="Nhập lại mật khẩu" />
+                                </div>
+                                <div *ngIf="patientFormGroup.get('retypePassword')?.invalid">
+                                    <div *ngIf="patientFormGroup.get('retypePassword')?.hasError('required')" class="ms-4 text-danger">Vui lòng nhập mật khẩu.</div>
+                                </div>
+                                <div *ngIf="patientFormGroup.hasError('passwordMismatch')" class="ms-4 text-danger">Mật khẩu hoặc xác nhận mật khẩu không đúng</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="email"><i class="bi bi-envelope-fill"></i></label>
+                                <input type="email" id="email" formControlName="email" placeholder="Email" />
+                            </div>
+                            <div class="form-group">
+                                <div class="position-relative">
+                                    <label for="name"><i class="bi bi-person"></i></label>
+                                    <input type="text" id="name" formControlName="name" placeholder="Tên Đầy Đủ" />
+                                </div>
+                                <div *ngIf="patientFormGroup.get('name')?.invalid">
+                                    <div *ngIf="patientFormGroup.get('name')?.hasError('required')" class="ms-4 text-danger">Vui lòng nhập tên.</div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="position-relative">
+                                    <label for="gender"><i class="bi bi-people"></i></label>
+                                    <select class="form-control ps-4" formControlName="gender" id="gender">
+                                        <option value="" selected disabled>--- Giới Tính ---</option>
+                                        <option value="true">Nam</option>
+                                        <option value="false">Nữ</option>
+                                    </select>
+                                </div>
+                                <div *ngIf="patientFormGroup.get('gender')?.invalid">
+                                    <div *ngIf="patientFormGroup.get('gender')?.hasError('required')" class="ms-4 text-danger">Vui lòng chọn giới tính.</div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="address"><i class="bi bi-geo-alt-fill"></i></label>
+                                <input type="text" id="address" formControlName="address" placeholder="Địa Chỉ" />
+                            </div>
+                            <div class="form-group">
+                                <div class="position-relative">
+                                    <label for="phoneNumber"><i class="bi bi-phone-fill"></i></label>
+                                    <input type="text" id="phoneNumber" formControlName="phoneNumber" placeholder="Số Điện Thoại" />
+                                </div>
+                                <div *ngIf="patientFormGroup.get('phoneNumber')?.invalid">
+                                    <div *ngIf="patientFormGroup.get('phoneNumber')?.hasError('required')" class="ms-4 text-danger">Vui lòng SĐT.</div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="position-relative">
+                                    <label for="dateOfBirth"><i class="bi bi-calendar-event-fill"></i></label>
+                                    <input type="date" id="dateOfBirth" formControlName="dateOfBirth" placeholder="Ngày Sinh" />
+                                </div>
+                                <div *ngIf="patientFormGroup.get('dateOfBirth')?.invalid">
+                                    <div *ngIf="patientFormGroup.get('dateOfBirth')?.hasError('required')" class="ms-4 text-danger">Vui lòng chọn ngày sinh.</div>
+                                </div>
+                            </div>
+                            <div class="form-group form-button">
+                                <button type="submit" class="btn btn-primary fs-5" [ngClass]="{'bg-body-secondary disabled': patientFormGroup.invalid}">Đăng Ký</button>
+                            </div>
+                        </form>
+                    </div>
+                </ng-container>
+
+                <ng-container *ngIf="showTemplate('Bác Sĩ')">
+                    <div class="signup-form">
+                        <h3 class="form-title">Đăng Ký Bác Sĩ</h3>
+                        <form class="register-form" [formGroup]="doctorFormGroup" (ngSubmit)="onSubmitDoctor()">
+                            <div class="form-group">
+                                <div class="position-relative">
+                                    <label for="username"><i class="bi bi-person-fill"></i></label>
+                                    <input type="text" id="username" formControlName="username" placeholder="Tên Tài Khoản" />
+                                </div>
+                                <div *ngIf="doctorFormGroup.get('username')?.invalid">
+                                    <div *ngIf="doctorFormGroup.get('username')?.hasError('required')" class="ms-4 text-danger">Vui lòng nhập tên tài khoản.</div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="position-relative">
+                                    <label for="password"><i class="bi bi-lock-fill"></i></label>
+                                    <input type="password" id="password" formControlName="password" placeholder="Mật Khẩu" />
+                                </div>
+                                <div *ngIf="doctorFormGroup.get('password')?.invalid">
+                                    <div *ngIf="doctorFormGroup.get('password')?.hasError('required')" class="ms-4 text-danger">Vui lòng nhập mật khẩu.</div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="position-relative">
+                                    <label for="retypePassword"><i class="bi bi-lock"></i></label>
+                                    <input type="password" id="retypePassword" formControlName="retypePassword" placeholder="Nhập lại mật khẩu" />
+                                </div>
+                                <div *ngIf="doctorFormGroup.get('retypePassword')?.invalid">
+                                    <div *ngIf="doctorFormGroup.get('retypePassword')?.hasError('required')" class="ms-4 text-danger">Vui lòng nhập mật khẩu.</div>
+                                </div>
+                                <div *ngIf="doctorFormGroup.hasError('passwordMismatch')" class="ms-4 text-danger">Mật khẩu hoặc xác nhận mật khẩu không đúng</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="email"><i class="bi bi-envelope-fill"></i></label>
+                                <input type="email" id="email" formControlName="email" placeholder="Email" />
+                            </div>
+                            <div class="form-group">
+                                <div class="position-relative">
+                                    <label for="name"><i class="bi bi-person"></i></label>
+                                    <input type="text" id="name" formControlName="name" placeholder="Tên Đầy Đủ" />
+                                </div>
+                                <div *ngIf="doctorFormGroup.get('name')?.invalid">
+                                    <div *ngIf="doctorFormGroup.get('name')?.hasError('required')" class="ms-4 text-danger">Vui lòng nhập tên.</div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="position-relative">
+                                    <label for="gender"><i class="bi bi-people"></i></label>
+                                    <select class="form-control ps-4" formControlName="gender" id="gender">
+                                        <option value="" selected disabled>--- Giới Tính ---</option>
+                                        <option value="true">Nam</option>
+                                        <option value="false">Nữ</option>
+                                    </select>
+                                </div>
+                                <div *ngIf="doctorFormGroup.get('gender')?.invalid">
+                                    <div *ngIf="doctorFormGroup.get('gender')?.hasError('required')" class="ms-4 text-danger">Vui lòng chọn giới tính.</div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="address"><i class="bi bi-geo-alt-fill"></i></label>
+                                <input type="text" id="address" formControlName="address" placeholder="Địa Chỉ" />
+                            </div>
+                            <div class="form-group">
+                                <div class="position-relative">
+                                    <label for="phoneNumber"><i class="bi bi-phone-fill"></i></label>
+                                    <input type="text" id="phoneNumber" formControlName="phoneNumber" placeholder="Số Điện Thoại" />
+                                </div>
+                                <div *ngIf="doctorFormGroup.get('phoneNumber')?.invalid">
+                                    <div *ngIf="doctorFormGroup.get('phoneNumber')?.hasError('required')" class="ms-4 text-danger">Vui lòng SĐT.</div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="position-relative">
+                                    <label for="dateOfBirth"><i class="bi bi-calendar-event-fill"></i></label>
+                                    <input type="date" id="dateOfBirth" formControlName="dateOfBirth" placeholder="Ngày Sinh" />
+                                </div>
+                                <div *ngIf="doctorFormGroup.get('dateOfBirth')?.invalid">
+                                    <div *ngIf="doctorFormGroup.get('dateOfBirth')?.hasError('required')" class="ms-4 text-danger">Vui lòng chọn ngày sinh.</div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="position-relative">
+                                    <label for="clinicId"><i class="bi bi-phone-fill"></i></label>
+                                    <select class="form-control ps-4" formControlName="clinicId" id="clinicId">
+                                        <option selected disabled value="">--Chọn Phòng Khám--</option>
+                                        <option *ngFor="let clinic of clinics" [value]="clinic.id">{{ clinic.name }}</option>
+                                    </select>
+                                </div>
+                                <div *ngIf="doctorFormGroup.get('clinicId')?.invalid">
+                                    <div *ngIf="doctorFormGroup.get('clinicId')?.hasError('required')" class="ms-4 text-danger">Vui lòng chọn phòng khám.</div>
+                                </div>
+                            </div>
+                            <div class="form-group form-button">
+                                <button type="submit" class="btn btn-primary" [ngClass]="{'bg-body-secondary disabled': doctorFormGroup.invalid}">Đăng Ký</button>
+                            </div>
+                        </form>
+                    </div>
+                </ng-container>
+
                 <div class="signup-image">
-                    <img src="/assets/images/signup-image.jpg" alt="sing up image">
+                    <div class="mb-5">
+                        <h6>Bạn đăng ký với tư cách gì ?</h6>
+                        <button class="btn me-5" *ngFor="let user of users" [ngClass]="{'visited': user === selectedUser}" (click)="onSelectedUser(user)">
+                            {{user}}
+                        </button>
+                    </div>
+
+                    <img class="border" src="/assets/images/signup-image.jpg" alt="sing up image">
                     <a href="/login" class="signup-image-link">Tôi đã có tài khoản </a>
                 </div>
             </div>

@@ -34,13 +34,5 @@ export class DoctorService {
     return this.http.delete<ResponseObject>(`${this.apiBaseUrl}/delete/${id}`);
   }
 
-  uploadImages(id : number, files : File[]) : Observable<ResponseObject> {
-    const formData = new FormData(); // FormDate đại diện cho cách truyền dự liệu bằng ModelAttribute
-    debugger;
-    for(let i = 0; i < files.length; i++) {
-      formData.append("files", files[i]);
-    }
 
-    return this.http.post<ResponseObject>(`${this.apiBaseUrl}/uploads/${id}`, formData);
-  }
 }

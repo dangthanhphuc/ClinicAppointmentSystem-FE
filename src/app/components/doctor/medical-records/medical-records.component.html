@@ -1,0 +1,171 @@
+<div class="container py-5">
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card rounded shadow border-0">
+                <div class="card-body p-5 bg-white rounded">
+                    <div class="">
+                        <div id="example_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                            <div class="row">
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="dataTables_length d-flex justify-content-start" id="example_length">
+                                        <strong class="mb-0 fs-3">Hồ sơ khám bệnh</strong>
+                                        <!-- <p class="mb-0">Show </p>
+                                        <select name="examp le_length" aria-controls="example" class="custom-select custom-select-sm form-control form-control-sm" style="width: max-content;">
+                                            <option value="10">10</option><option value="25">25</option>
+                                            <option value="50">50</option><option value="100">100</option>
+                                        </select>
+                                        <p class="mb-0"> entries</p> -->
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-6 d-flex justify-content-end">
+                                    <div id="example_filter" class="dataTables_filter d-flex">
+                                        <label for="search">Search: </label>
+                                        <input type="search" id="search" class="form-control form-control-sm" placeholder="" aria-controls="example">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row my-3">
+                                <div class="col-md-12">
+                                    <table id="example" style="width:100%" class="table table-striped table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Ngày khám</th>
+                                                <th>Mã BN</th>
+                                                <th>Tên BN</th>
+                                                <th>Loại khám</th>
+                                                <th>Phòng khám </th>
+                                                <th>Trạng thái</th>
+                                                <th>Chẩn đoán LS</th>
+                                                <th>Kết luận</th>
+                                                <th>Thao tác</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let appointment of appointments; let i = index;">
+                                                <td>{{appointment.available_time_start.toString().slice(0, 10) | date: "dd/MM/yyyy"}}</td>
+                                                <td>{{appointment.patient ? appointment.patient.id : ""}}</td>
+                                                <td>{{appointment.patient ? appointment.patient.name : "" }}</td>
+                                                <td>{{appointment.appointment_type_name}}</td>
+                                                <td>{{appointment.doctor.clinic.name}}</td>
+                                                <td>{{appointment.status}}</td>
+                                                <td>{{appointment.clinical_diagnosis}}</td>
+                                                <td>{{appointment.result}}</td>
+                                                <th>
+                                                    <div class="d-flex flex-nonwrap gap-3">
+                                                        <!-- <button type="button" class="btn btn-primary p-2 border rounded" (click)="updateResult(i)"><i class="bi bi-arrow-bar-up"></i></button> -->
+                                                        <button type="button" class="btn btn-warning p-2 border rounded" (click)="updateResult(i)"><i class="bi bi-file-text"></i></button>
+                                                        <button type="button" class="btn btn-info p-2 border rounded" (click)="detailResult(i)"><i class="bi bi-info-circle"></i></button>
+                                                    </div>
+                                                </th>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12 col-md-5">
+                                    <div class="dataTables_info" id="example_info" role="status" aria-live="polite">Showing 1 to 10 of 30 entries</div>
+                                </div>
+                                <div class="col-sm-12 col-md-7">
+                                    <div class="dataTables_paginate paging_simple_numbers" id="example_paginate">
+                                        <ul class="pagination justify-content-end">
+                                            <li class="paginate_button page-item previous disabled " id="example_previous"><a href="#" aria-controls="example" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li>
+                                            <li class="paginate_button page-item active"><a href="#" aria-controls="example" data-dt-idx="1" tabindex="0" class="page-link">1</a></li>
+                                            <li class="paginate_button page-item "><a href="#" aria-controls="example" data-dt-idx="2" tabindex="0" class="page-link">2</a></li>
+                                            <li class="paginate_button page-item "><a href="#" aria-controls="example" data-dt-idx="3" tabindex="0" class="page-link">3</a></li>
+                                            <li class="paginate_button page-item next" id="example_next"><a href="#" aria-controls="example" data-dt-idx="4" tabindex="0" class="page-link">Next</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #updateResultModal let-modal>
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable m-0">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Cập nhập kết quả</h5>
+                <button type="button" class="btn-close" (click)="modal.dismiss()" aria-label="Close"></button>
+            </div>
+            <form [formGroup]="updateResultForm" (ngSubmit)="onUpdateResult(updateResultForm)">
+                <div class="modal-body">
+                    <div class="col-md-12 mb-3">
+                        <label class="clinical_diagnosis">Chuẩn đoán</label>
+                        <input type="text" class="form-control" placeholder="Thông tin về chuẩn đoán lâm sàn" formControlName="clinical_diagnosis" />
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label class="result">Kết luận</label>
+                        <input type="text" class="form-control" placeholder="Kết luận" formControlName="result" />
+                    </div>
+                    <div class="col-md-12">
+                        <label class="files">Hình ảnh đính kèm (tối đa 5)</label>
+                        <input type="file" class="form-control" (change)="onFileChange($event)" placeholder="Hình ảnh đính kèm" multiple accept="image/*" />
+                    </div>
+
+                    <ng-container *ngIf="previewUrls.length > 0">
+                        <div class="col-md-12">
+                            <label>Ảnh xem trước</label>
+                            <div class="d-flex flex-wrap row-gap-3">
+                                <div *ngFor="let previewUrl of previewUrls" class="col-4">
+                                    <img [src]="previewUrl" alt="Image preview" class="img-thumbnail" width="150">
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Hủy</button>
+                    <button type="submit" class="btn btn-primary" (click)="modal.dismiss()">Lưu</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #detailsResultModal let-modal>
+
+
+    <div class="modal-dialog modal-dialog-centered m-0">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Chi tiết</h5>
+                <button type="button" class="btn-close" (click)="modal.dismiss()" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12 mb-3">
+                        <label class="clinical_diagnosis">Chuẩn đoán</label>
+                        <p>{{selectedAppointment?.clinical_diagnosis}}</p>
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label class="result">Kết luận</label>
+                        <p>{{selectedAppointment?.result}}</p>
+                    </div>
+                    <div class="col-md-12">
+                        <label class="files">Hình ảnh đính kèm </label>
+                        <div class="d-flex flex-wrap row-gap-3">
+                            <div *ngFor="let result_image of selectedAppointment?.result_images" class="col-4">
+                                <img [src]="result_image.img_url" alt="Image preview" class="img-thumbnail" width="150">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+
+
+</ng-template>

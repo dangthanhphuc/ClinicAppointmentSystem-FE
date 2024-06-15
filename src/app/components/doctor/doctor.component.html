@@ -1,0 +1,79 @@
+<div class="left-panel">
+    <nav class="navbar navbar-expand-sm navbar-default">
+        <div class="main-menu collapse navbar-collapse">
+            <ul class="nav navbar-nav w-100">
+                <li>
+                    <button type="button" class="btn text-start" [routerLink]="['./appointments']"><i class="bi bi-calendar3"></i>Quản lý lịch hẹn</button>
+                </li>
+                <li>
+                    <button type="button" class="btn text-start" [routerLink]="['./message']"><i class="bi bi-envelope-fill"></i>Tin nhắn (*)</button>
+                </li>
+                <li>
+                    <button type="button" class="btn text-start" [routerLink]="['./medical_records']"><i class="bi bi-folder-fill"></i>Hồ sơ khám bệnh</button>
+                </li>
+                <li>
+                    <button type="button" class="btn text-start" [routerLink]="['./account']"><i class="bi bi-person-circle"></i>Tài khoản</button>
+                </li>
+                <li>
+                    <button type="button" class="btn text-start border-top" (click)="logout()"><i class="bi bi-power"></i>Đăng xuất</button>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</div>
+<div class="right-panel">
+    <header class="header">
+        <div class="top-left float-start logo">
+            <img src="/assets/images/medbook.png" alt="" class="h-100">
+        </div>
+
+        <div class="top-right position-relative">
+            <div class="menu d-flex justify-content-end">
+                <div class="header-left d-inline-block d-flex">
+                    <app-notification [notifications]="notifications" (notificationId)="handleNotificationId($event)" (eventReadAll)="handleEventReadAll()"></app-notification>
+                    <div class="dropdown for-message d-inline-block d-flex align-items-center">
+                        <button class="btn btn-white h-100" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-envelope"></i>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-end">
+                            <a class="nav-link" href="#"><i class="fa fa-user"></i>My Message</a>
+                            <a class="nav-link" href="#"><i class="fa fa-user"></i>My Message</a>
+                            <a class="nav-link" href="#"><i class="fa fa-user"></i>My Message</a>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="user-area">
+                    <button class="btn p-0 d-flex align-items-center" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img [src]="doctorResponse.img_url" alt="" class="rounded-circle p-2" style="height: 60px; width: 60px;" width="">
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-end">
+                        <ul class="p-0">
+                            <li><button type="button" class="btn dropdown-item text-center" (click)="logout()"><i class="fa fa-user"></i>Đăng Xuất</button></li>
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="content">
+        <router-outlet></router-outlet>
+    </div>
+
+
+    <footer class="site-footer">
+        <div class="footer-inner bg-white">
+            <div class="row">
+                <div class="col-sm-6">
+                    Copyright © 2018 Ela Admin
+                </div>
+                <div class="col-sm-6 text-right">
+                    Designed by <a href="https://colorlib.com">Colorlib</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</div>

@@ -1,64 +1,78 @@
 <app-header></app-header>
-<div class="container my-5" style="height: 1000px;">
+<div class="container position-after-header">
     <div>
         <div class="title-part">
-            <strong>LOẠI PHÒNG KHÁM</strong>
+            <strong>Chuyên Khoa</strong>
         </div>
-        <div class="row row-cols-4 ">
-            <div class="col-3 mb-4" *ngFor="let category of categories">
-                <div class="card rounded-4 card-category">
+        <div class="row row-cols-4">
+            <div class="col-3" *ngFor="let specialty of specialtiesHead">
+                <div class="card rounded-4 card-category" (click)="onCardClick(specialty.name, specialty.id)">
                     <div class="overplay rounded-4">
                         <div class="position-absolute category-title">
-                            <h4 class="text-capitalize">{{ category.name }}</h4>
-                            <P>SỐ LƯỢNG PHÒNG KHÁM</P>
+                            <h4 class="text-capitalize">{{ specialty.name }}</h4>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="text-center mt-4">
-            <a class="btn-readmore">XEM THÊM</a>
+
+        <div class="text-center mt-3">
+            <div class="collapse mb-4" id="collapseSpecialties">
+                <div class="row row-cols-4 row-gap-3">
+                    <div class="col-3" *ngFor="let specialty of specialties">
+                        <div class="card rounded-4 card-category" (click)="onCardClick(specialty.name, specialty.id)" [routerLink]="['/doctors']" [queryParams]="{specialty: specialty.id}">
+                            <div class="overplay rounded-4">
+                                <div class="position-absolute category-title">
+                                    <h4 class="text-capitalize">{{ specialty.name }}</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-light btn-readmore" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpecialties" aria-expanded="false" aria-controls="collapseSpecialties" (click)="onChangeCollapse('specialties')" #btnSpecialtiesShow>
+                XEM THÊM
+            </button>
         </div>
+
     </div>
+
 
 
     <div style="margin-top: 150px;">
         <div class="title-part">
             <strong>TÊN PHÒNG KHÁM</strong>
         </div>
-        <div class="row row-cols-3 px-5">
-            <div class="col">
+        <div class="row row-cols-4">
+            <div class="col" *ngFor="let clinic of clinicsHead">
                 <div class="card">
                     <img class="clinic-img" src="https://encrypted-tbn1.gstatic.com/licensed-image?q=tbn:ANd9GcRubevyxtHLkX0tJVeEFraQ69XO-pt9WRoUCC10WjiDPXUZ44IsdxIzDaNauBn1dn6--kHucmKSXXr8M0582OROQzwdkA58EQ2ndA3JcQ" class="card-img-top" alt="...">
                     <div class="card-body">
-                        <h4>Tên phòng khám</h4>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card">
-                    <img class="clinic-img" src="https://encrypted-tbn1.gstatic.com/licensed-image?q=tbn:ANd9GcRubevyxtHLkX0tJVeEFraQ69XO-pt9WRoUCC10WjiDPXUZ44IsdxIzDaNauBn1dn6--kHucmKSXXr8M0582OROQzwdkA58EQ2ndA3JcQ" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h4>Tên phòng khám</h4>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card">
-                    <img class="clinic-img" src="https://encrypted-tbn1.gstatic.com/licensed-image?q=tbn:ANd9GcRubevyxtHLkX0tJVeEFraQ69XO-pt9WRoUCC10WjiDPXUZ44IsdxIzDaNauBn1dn6--kHucmKSXXr8M0582OROQzwdkA58EQ2ndA3JcQ" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h4>Tên phòng khám</h4>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        <h4>{{clinic.name}}</h4>
+                        <p class="card-text">{{clinic.description}}</p>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="text-center mt-4">
-            <a class="btn-readmore">XEM THÊM</a>
+        <div class="text-center mt-3">
+            <div class="collapse mb-4" id="collapseClinics">
+                <div class="row row-cols-4 row-gap-3">
+                    <div class="col" *ngFor="let clinic of clinics">
+                        <div class="card">
+                            <img class="clinic-img" src="https://encrypted-tbn1.gstatic.com/licensed-image?q=tbn:ANd9GcRubevyxtHLkX0tJVeEFraQ69XO-pt9WRoUCC10WjiDPXUZ44IsdxIzDaNauBn1dn6--kHucmKSXXr8M0582OROQzwdkA58EQ2ndA3JcQ" class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h4>{{clinic.name}}</h4>
+                                <p class="card-text">{{clinic.description}}</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-light btn-readmore" type="button" data-bs-toggle="collapse" data-bs-target="#collapseClinics" aria-expanded="false" aria-controls="collapseClinics" (click)="onChangeCollapse('clinics')" #btnClinicsShow> 
+                XEM THÊM
+            </button>
         </div>
     </div>
 </div>
-
 <app-footer></app-footer>

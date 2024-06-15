@@ -1,0 +1,68 @@
+<app-header></app-header>
+<div class="container position-after-header">
+    <div class="row">
+        <div class="col-3">
+            <div class="border rounded-3 p-3">
+                <h4>Chuyên Khoa</h4>
+                <input type="text" class="border px-3 py-2 w-100 " placeholder="Tìm kiếm chuyên khoa" [(ngModel)]="specialtyName" (ngModelChange)="filterSpecialties()">
+                <div *ngFor="let specialty of specialtiesDisplay" class="d-flex p-2">
+                    <input type="radio" [checked]="specialty.id === ($specialtyId | async)" name="category" [id]="specialty.name" [value]="specialty.name" (change)="onChangeCategory(specialty.id)" [routerLink]="['./']" [queryParams]="{specialty: ($specialtyId | async)}">
+                    <label [for]="specialty.name" class="flex-grow-1 ps-3">{{ specialty.name }}</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-9">
+            <div class="border rounded-3 p-3">
+                <div class="border-bottom d-flex justify-content-between pb-4">
+                    <h3>
+                        {{ selectedSpecialty?.name }}
+                    </h3>
+                    <div class="d-flex column-gap-3">
+                        <select name="" id="" (change)="onChangeClinics($event)">
+                            <option value="" selected disabled>-- Phòng Khám --</option>
+                            <option *ngFor="let clinic of clinics" [value]="clinic.name">{{clinic.name}}</option>
+                        </select>
+
+                        <select name="" id="" (change)="onChangeOrderBy($event)">
+                            <option value="" selected disabled> -- Sắp Xếp --</option>
+                            <option value="ASC">Sắp xếp A-Z</option>
+                            <option value="DESC">Sắp xếp Z-A</option>
+                        </select>
+
+                        <select (change)="onChangedGender($event)">
+                            <option value="" selected disabled>--- Giới Tính ---</option>
+                            <option value="Nam">Nam</option>
+                            <option value="Nữ">Nữ</option>
+                        </select>
+
+                    </div>
+                </div>
+
+                <div class="p-4">
+                    <div class="row row-cols-3 g-3 gx-2">
+                        <ng-container *ngIf="doctors && doctors.length > 0">
+                            <div *ngFor="let doctor of doctorsDisplay" class="col">
+                                <div class="card h-100" [routerLink]="['/doctors', doctor.id]">
+                                    <img [src]="doctor.img_url" alt="svs" class="p-2 h-50">
+                                    <div class="card-body ">
+                                        <ul class="flex g-2 my-2 p-0">
+                                            <li class="bg-secondary-subtle rounded-pill px-3 py-1 d-inline-block me-2 mb-2" *ngFor="let specialty of doctor.specialties">
+                                                {{ specialty.name }}
+                                            </li>
+                                        </ul>
+                                        <div>
+                                            <h5 class="card-title">{{ doctor.name }}</h5>
+                                            <p class="card-text">{{doctor.clinic.name}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<app-footer></app-footer>

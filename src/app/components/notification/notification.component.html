@@ -1,0 +1,87 @@
+<div class="dropdown dropdown-notification">
+    <a class="nav-link" id="navbarNotificationDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <fa-icon class="icon px-auto" [icon]="faBell"></fa-icon>
+        <ng-container *ngIf="numberOfUnread > 0">
+            <span class="position-absolute translate-middle badge rounded-pill bg-danger" style="top: 25%;left: 80%;">
+                {{numberOfUnread}}
+                <span class="visually-hidden">unread messages</span>
+            </span>
+        </ng-container>
+    </a>
+    <div class="dropdown-menu dropdown-menu-lg-end py-0 " aria-labelledby="navbarNotificationDropdown" style="min-width: 400px; max-height: 400px;">
+        <div class="notification-header">
+            <h5 class="flex-grow-1 mb-0">Thông báo</h5>
+            <button type="button" class="btn" (click)="onReadAll()">
+                <i class="bi bi-check2-all"></i>
+            </button>
+        </div>
+        <ng-container *ngIf="notifications.length > 0 ; else noNotification">
+            <div class="overflow-auto" style="min-width: 400px; max-height: 350px;">
+                <ng-container *ngIf="notificationsInDay.length > 0">
+                    <h5 class="text-center fst-italic mt-4">Mới nhất</h5>
+                    <div class="notification-item" *ngFor="let notification of notificationsInDay" [ngClass]="{'read-notification': notification.read}" (click)="onHaveRead(notification.id)">
+                        <!--  dùng for qua các notification-->
+                        <i class="fa-solid" [ngClass]="{
+                            'fa-circle-check text-success': notification.type == NotificationType.SUCCESS,
+                            'fa-circle-info text-primary': notification.type == NotificationType.INFORMATION,
+                            'fa-triangle-exclamation text-warning': notification.type == NotificationType.WARNING,
+                            'fa-circle-xmark text-danger': notification.type == NotificationType.ERROR,
+                        }"></i>
+                        <div class="content">
+                            <h6 class="mb-0 fw-bold">{{notification.title}}</h6>
+                            <p class="mb-0 fw-normal" style="font-size: 14px;">{{notification.message}}</p>
+                            <p class="mt-2 mb-0 text-end fw-lighter">{{calculateDaysDifference(notification.date_time)}}</p>
+                        </div>
+                    </div>
+                </ng-container>
+
+                <ng-container *ngIf="notificationsInWeek.length > 0">
+                    <h5 class="text-center fst-italic mt-4">7 ngày trước</h5>
+                    <div class="notification-item" *ngFor="let notification of notificationsInWeek" [ngClass]="{'read-notification': notification.read}" (click)="onHaveRead(notification.id)">
+                        <!--  dùng for qua các notification-->
+                        <i class="fa-solid" [ngClass]="{
+                            'fa-circle-check text-success': notification.type == NotificationType.SUCCESS,
+                            'fa-circle-info text-primary': notification.type == NotificationType.INFORMATION,
+                            'fa-triangle-exclamation text-warning': notification.type == NotificationType.WARNING,
+                            'fa-circle-xmark text-danger': notification.type == NotificationType.ERROR,
+                        }"></i>
+                        <div class="content">
+                            <h6 class="mb-0 fw-bold">{{notification.title}}</h6>
+                            <p class="mb-0 fw-normal" style="font-size: 14px;">{{notification.message}}</p>
+                            <p class="mt-3 mb-0 text-end fw-lighter">{{calculateDaysDifference(notification.date_time)}}</p>
+                        </div>
+                    </div>
+                </ng-container>
+
+                <ng-container *ngIf="notificationsInMonth.length > 0">
+                    <h5 class="text-center fst-italic mt-4">1 tháng trước</h5>
+                    <div class="notification-item" *ngFor="let notification of notificationsInMonth" [ngClass]="{'read-notification': notification.read}" (click)="onHaveRead(notification.id)">
+                        <i class="fa-solid" [ngClass]="{
+                            'fa-circle-check text-success': notification.type == NotificationType.SUCCESS,
+                            'fa-circle-info text-primary': notification.type == NotificationType.INFORMATION,
+                            'fa-triangle-exclamation text-warning': notification.type == NotificationType.WARNING,
+                            'fa-circle-xmark text-danger': notification.type == NotificationType.ERROR,
+                        }"></i>
+                        <div class="content">
+                            <h6 class="mb-0 fw-bold">{{notification.title}}</h6>
+                            <p class="mb-0 fw-normal" style="font-size: 14px;">{{notification.message}}</p>
+                            <p class="mt-3 mb-0 text-end fw-lighter">{{calculateDaysDifference(notification.date_time)}}</p>
+                        </div>
+                    </div>
+                </ng-container>
+            </div>
+
+
+        </ng-container>
+
+        <ng-template #noNotification>
+            <div class="no-notification">
+                <div class="w-100 text-center">
+                    <i class="bi bi-bell"></i>
+                    <p class="mb-0">Bạn không có thông báo mới !</p>
+                </div>
+            </div>
+        </ng-template>
+
+    </div>
+</div>

@@ -1,0 +1,62 @@
+.dropdown-notification {
+    align-content: center;
+    height: 100%;
+}
+
+.notification-header {
+    display: flex;
+    align-content: center;
+    border-bottom: 1px solid #eee;
+    padding: 6px 12px;
+}
+
+.notification-header h5 {
+    display: flex;
+    align-items: center;
+}
+
+.notification-item {
+    display: flex;
+    border-bottom: 1px solid #eee;
+    padding: 6px 9px;
+    margin-bottom: 0px;
+    cursor: pointer;
+}
+
+.notification-item:hover {
+    background-color: #eee;
+}
+
+.notification-item i {
+    display: block;
+    font-size: 50px;
+    margin-right: 12px;
+    // border-radius: 50%;
+    margin-top: 2px;
+    align-self: center;
+}
+
+.notification-item .content {
+    align-self: center;
+    flex: 1;
+}
+
+.no-notification {
+    min-height: 300px;
+    display: flex;
+    background-color: #eee;
+    align-items: center;
+}
+
+.no-notification i {
+    font-size: 60px;
+}
+
+.read-notification {
+    background-color: #f0f0f0;
+    /* Màu nền cho thông báo đã đọc */
+    box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.1), inset -2px -2px 5px rgba(255, 255, 255, 0.7);
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 8px;
+}
